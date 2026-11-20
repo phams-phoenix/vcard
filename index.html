@@ -52,10 +52,11 @@
       letter-spacing: 0.8px; margin-bottom: 24px;
     }
     .btn-action {
-      width: 100%; padding: 15px; border: none; border-radius: 16px; cursor: pointer;
+      display: block; width: 100%; padding: 15px; border-radius: 16px;
       background: linear-gradient(135deg, #1652a8, #2b74de); color: #ffffff;
       font-weight: 750; font-size: 1rem; box-shadow: 0 8px 28px var(--blue-glow);
       border: 1px solid rgba(212, 180, 41, 0.35);
+      text-decoration: none;
       transition: transform 0.15s, box-shadow 0.15s; margin-bottom: 24px;
       text-transform: uppercase; letter-spacing: 0.6px;
     }
@@ -90,13 +91,13 @@
 
   <div class="card">
     <div class="logo-wrapper">
-      <img id="brand-logo" src="logo.jpg" alt="Logo Pham's Phoenix La poterie de Hai" />
+      <img src="logo.jpg" alt="Logo Pham's Phoenix La poterie de Hai" />
     </div>
 
     <h1>Pham's Phoenix</h1>
     <div class="subtitle">La poterie de Hai</div>
 
-    <button class="btn-action" onclick="downloadVCard()">Ajouter aux contacts</button>
+    <a class="btn-action" href="contact.vcf">Ajouter aux contacts</a>
 
     <div class="info-list">
       <div class="info-item">
@@ -133,75 +134,6 @@
       Pham's Phoenix – La poterie de Hai à Bouconvillers (Z.A Le Paradis). Ouvert du mardi au samedi de 9h30 à 18h30 et le dimanche de 10h à 16h.
     </div>
   </div>
-
-  <script>
-    function getLogoBase64() {
-      try {
-        const img = document.getElementById("brand-logo");
-        if (!img || !img.complete || img.naturalWidth === 0) return "";
-        const canvas = document.createElement("canvas");
-        const size = 300;
-        canvas.width = size;
-        canvas.height = size;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, size, size);
-        const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
-        return dataUrl.split(",")[1] || "";
-      } catch (e) {
-        return "";
-      }
-    }
-
-    function downloadVCard() {
-      const contact = {
-        org: "Pham's Phoenix - La poterie de Hai",
-        phone: "+33658818859",
-        street: "Z.A Le Paradis",
-        city: "Bouconvillers",
-        zip: "60240",
-        country: "France",
-        facebook: "https://www.facebook.com/profile.php?id=100093166375162",
-        pageUrl: window.location.href,
-        note: "La poterie de Hai - Z.A Le Paradis, 60240 Bouconvillers. Horaires : Mar-Sam 9h30-18h30, Dim 10h-16h (Fermé le lundi)."
-      };
-
-      const photoBase64 = getLogoBase64();
-
-      const lines = [
-        "BEGIN:VCARD",
-        "VERSION:3.0",
-        `N:;${contact.org};;;`,
-        `FN:${contact.org}`,
-        `ORG:${contact.org}`,
-        `TEL;TYPE=WORK,VOICE:${contact.phone}`,
-        `ADR;TYPE=WORK,POSTAL:;;${contact.street};${contact.city};;${contact.zip};${contact.country}`,
-        `URL:${contact.facebook}`,
-        `URL:${contact.pageUrl}`,
-        `NOTE:${contact.note.replace(/\n/g, "\\n")}`
-      ];
-
-      if (photoBase64) {
-        lines.push(`PHOTO;ENCODING=b;TYPE=JPEG:${photoBase64}`);
-      }
-
-      lines.push("END:VCARD");
-
-      const vcard = lines.join("\r\n");
-      const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8" });
-      const url = window.URL.createObjectURL(blob);
-
-      const a = document.createElement("a");
-      a.style.display = "none";
-      a.href = url;
-      a.download = "Phams_Phoenix_La_poterie_de_Hai.vcf";
-
-      document.body.appendChild(a);
-      a.click();
-
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    }
-  </script>
 
 </body>
 </html>
